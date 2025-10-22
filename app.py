@@ -27,6 +27,13 @@ df_filtered = df[(df["Country"] == country) &
                  (df["Date"].dt.date >= start_date) &
                  (df["Date"].dt.date <= end_date)]
 
+st.download_button(
+    label="📥 Download filtered data as CSV",
+    data=df_filtered.to_csv(index=False).encode('utf-8'),
+    file_name='covid_filtered_data.csv',
+    mime='text/csv'
+)
+
 # Derived features
 df_filtered["Active"] = df_filtered["Confirmed"] - df_filtered["Recovered"] - df_filtered["Deaths"]
 df_filtered["DailyConfirmed"] = df_filtered["Confirmed"].diff().fillna(0)
