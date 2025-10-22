@@ -20,15 +20,12 @@ df = load_data()
 # Sidebar filters
 st.sidebar.header("🔎 Filter Options")
 country = st.sidebar.selectbox("Select Country", df["Country"].unique())
-date_range = st.sidebar.slider("Select Date Range",
-                               min_value=df["Date"].min().date(),
-                               max_value=df["Date"].max().date(),
-                               value=(df["Date"].min().date(), df["Date"].max().date()))
-
+start_date = st.sidebar.date_input("Start Date", df["Date"].min().date())
+end_date = st.sidebar.date_input("End Date", df["Date"].max().date())
 # Filter data
 df_filtered = df[(df["Country"] == country) &
-                 (df["Date"].dt.date >= date_range[0]) &
-                 (df["Date"].dt.date <= date_range[1])]
+                 (df["Date"].dt.date >= start_date) &
+                 (df["Date"].dt.date <= end_date)]
 
 # Derived features
 df_filtered["Active"] = df_filtered["Confirmed"] - df_filtered["Recovered"] - df_filtered["Deaths"]
@@ -40,6 +37,7 @@ df_filtered["MA7_Confirmed"] = df_filtered["Confirmed"].rolling(7).mean()
 st.title("🌍 COVID-19 EDA Dashboard")
 st.write(f"### Data for {country}")
 st.dataframe(df_filtered.head())
+st.write(f"### Showing data from {start_date} to {end_date}")
 
 # Time series chart
 st.subheader("📈 Confirmed Cases Over Time")
