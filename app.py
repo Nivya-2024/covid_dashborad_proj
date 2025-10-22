@@ -72,21 +72,17 @@ fig_top10 = px.bar(
 )
 
 # Display the chart
-st.plotly_chart(fig_top10, use_container_width=True)
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig1, use_container_width=True)
 
 # Daily confirmed histogram
 st.subheader("📊 Daily Confirmed Case Distribution")
 fig2 = px.histogram(df_filtered, x="DailyConfirmed", nbins=50)
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig2, use_container_width=True)
 
 # Correlation heatmap
 st.subheader("🔗 Correlation Matrix")
 corr = df_filtered[["Confirmed", "Deaths", "Recovered", "Active"]].corr()
 fig3 = px.imshow(corr, text_auto=True, title="Correlation Heatmap")
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig3, use_container_width=True)
 
 
@@ -95,7 +91,6 @@ st.plotly_chart(fig3, use_container_width=True)
 st.markdown("## 📈 Time Series with Range Selector")
 fig_ts = px.line(df_filtered, x="Date", y="Confirmed", title="Confirmed Cases Over Time")
 fig_ts.update_xaxes(rangeslider_visible=True)
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig_ts, use_container_width=True)
 
 # --- Section: Global Map of Confirmed Cases ---
@@ -105,7 +100,6 @@ df_latest = df[df["Date"] == latest_date]
 fig_map = px.choropleth(df_latest, locations="Country", locationmode="country names",
                         color="Confirmed", title=f"Confirmed Cases on {latest_date.date()}",
                         color_continuous_scale="Reds")
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig_map, use_container_width=True)
 
 # --- Section: Country Comparison Mode ---
@@ -133,7 +127,6 @@ fig_compare = px.line(
     color="Country",
     title="Confirmed Cases Over Time"
 )
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig_compare, use_container_width=True)
 
 # --- Section: Growth Rate & Moving Average Trends ---
@@ -147,7 +140,6 @@ fig_ma = px.line(
     y="MA7_Confirmed",
     title="7-Day Moving Average of Confirmed Cases"
 )
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig_ma, use_container_width=True)
 
 # Daily Growth Rate Chart
@@ -158,45 +150,20 @@ fig_growth = px.line(
     y="GrowthRate",
     title="Daily Growth Rate (%)"
 )
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig_growth, use_container_width=True)
 
 # --- Section: Correlation Heatmap (already added in Step 1) ---
 st.markdown("## 🔗 Correlation Matrix")
 fig_corr = px.imshow(corr, text_auto=True, title="Correlation Heatmap")
 fig_corr.update_layout(margin=dict(l=40, r=40, t=40, b=40))
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig_corr, use_container_width=True)
 
 # --- Section: Scatter Plot with Hover Info ---
 st.markdown("## 📌 Daily Cases vs Growth Rate")
 fig_scatter = px.scatter(df_filtered, x="DailyConfirmed", y="GrowthRate",
                          hover_data=["Date"], title="Daily Cases vs Growth Rate")
-st.plotly_chart(fig_top10, use_container_width=True)
 st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 
 
-st.header("🌍 Top 10 Countries by Confirmed Cases (Latest Date)")
-
-# Get latest date's data
-latest_date = df["Date"].max()
-df_latest = df[df["Date"] == latest_date]
-
-# Sort and select top 10
-top10 = df_latest.sort_values(by='Confirmed', ascending=False).head(10)
-
-# Plot
-fig_top10 = px.bar(top10, x='Country', y='Confirmed',
-                   title=f"Top 10 Countries by Confirmed Cases on {latest_date.date()}",
-                   color='Confirmed', color_continuous_scale='Reds')
-st.plotly_chart(fig_top10, use_container_width=True)
-st.plotly_chart(fig_top10, use_container_width=True)
-
-
-# --- Section: Scatter Plot with Hover Info ---
-
-st.markdown("---")
-st.markdown("📊 Data Source: [COVID-19 Dataset](https://github.com/datasets/covid-19)")
-st.markdown("Made with ❤️ by Niveditha")
